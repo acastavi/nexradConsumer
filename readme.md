@@ -19,7 +19,7 @@ This POC needs Spark 1.4 available in http://spark.apache.org/downloads.html
 
 To run NexRadConsumer run:
 
-    bin/spark-submit --class co.com.psl.nexradConsumer.SparkExample path_to_jar/nexrad-1.0-SNAPSHOT-jar-with-dependencies.jar
+    bin/spark-submit --class co.com.psl.nexradconsumer.SparkExample path_to_jar/nexrad-1.0-SNAPSHOT-jar-with-dependencies.jar
 
 ## Out
 
