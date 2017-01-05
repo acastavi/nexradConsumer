@@ -75,17 +75,9 @@ public class NexRADUtils {
             RadialDatasetSweep.Sweep sweep = radialVariable.getSweep(i);
             for (int j = 0; j < sweep.getRadialNumber(); j++) {
                 Float value = fun.apply(sweep, j);
-                if (!value.isNaN()) {
-                    int match;
-                    if (valuesAndMatch.containsKey(value)) {
-                        match = valuesAndMatch.get(value) + 1;
-                    } else {
-                        match = 1;
-                    }
-                    valuesAndMatch.put(value, match);
-                    min = Integer.min(min, match);
-                    max = Integer.max(max, match);
-                }
+                int match = getMatchForValue(value,valuesAndMatch);
+                min = Integer.min(min, match);
+                max = Integer.max(max, match);
             }
         }
         int limit = (max - min) / 2 + min;
@@ -130,5 +122,18 @@ public class NexRADUtils {
             }
         }
         return dataForAzimuth;
+    }
+
+    public int getMatchForValue(float value, HashMap<Float, Integer> valuesAndMatch) {
+        if (Float.isNaN(value))
+            return 0;
+        if (valuesAndMatch.containsKey(value)){
+            int match = valuesAndMatch.get(value) + 1;
+            valuesAndMatch.put(value, match);
+            return match;
+        } else {
+            valuesAndMatch.put(value,1);
+            return 1;
+        }
     }
 }

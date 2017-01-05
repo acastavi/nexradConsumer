@@ -20,6 +20,64 @@ public class NexRADUtilsTest {
     TestUtils testUtils = new TestUtils();
 
     @Test
+    public void whenNaNShouldReturn0AndMapUnchanged(){
+        HashMap<Float, Integer> valuesAndMatch = new HashMap<>();
+        valuesAndMatch.put(0.1f,1);
+        valuesAndMatch.put(0.2f,1);
+        valuesAndMatch.put(0.3f,1);
+        valuesAndMatch.put(0.4f,1);
+        NexRADUtils nexRADUtils = new NexRADUtils();
+
+        int result = nexRADUtils.getMatchForValue(Float.NaN, valuesAndMatch);
+
+        Assert.assertEquals(0, result);
+        Assert.assertEquals(4,valuesAndMatch.size());
+        Assert.assertEquals(Integer.valueOf(1),valuesAndMatch.get(0.1f));
+        Assert.assertEquals(Integer.valueOf(1),valuesAndMatch.get(0.2f));
+        Assert.assertEquals(Integer.valueOf(1),valuesAndMatch.get(0.3f));
+        Assert.assertEquals(Integer.valueOf(1),valuesAndMatch.get(0.4f));
+    }
+
+    @Test
+    public void whenValueInMapShouldReturnNewMap(){
+        HashMap<Float, Integer> valuesAndMatch = new HashMap<>();
+        valuesAndMatch.put(0.1f,1);
+        valuesAndMatch.put(0.2f,1);
+        valuesAndMatch.put(0.3f,1);
+        valuesAndMatch.put(0.4f,1);
+        NexRADUtils nexRADUtils = new NexRADUtils();
+
+        int result = nexRADUtils.getMatchForValue(0.1f, valuesAndMatch);
+
+        Assert.assertEquals(2, result);
+        Assert.assertEquals(4,valuesAndMatch.size());
+        Assert.assertEquals(Integer.valueOf(2),valuesAndMatch.get(0.1f));
+        Assert.assertEquals(Integer.valueOf(1),valuesAndMatch.get(0.2f));
+        Assert.assertEquals(Integer.valueOf(1),valuesAndMatch.get(0.3f));
+        Assert.assertEquals(Integer.valueOf(1),valuesAndMatch.get(0.4f));
+    }
+
+    @Test
+    public void whenNewValueShouldReturnMatchAndBiggerMap() {
+        HashMap<Float, Integer> valuesAndMatch = new HashMap<>();
+        valuesAndMatch.put(0.1f,1);
+        valuesAndMatch.put(0.2f,1);
+        valuesAndMatch.put(0.3f,1);
+        valuesAndMatch.put(0.4f,1);
+        NexRADUtils nexRADUtils = new NexRADUtils();
+
+        int result = nexRADUtils.getMatchForValue(0.5f, valuesAndMatch);
+
+        Assert.assertEquals(1, result);
+        Assert.assertEquals(5, valuesAndMatch.size());
+        Assert.assertEquals(Integer.valueOf(1),valuesAndMatch.get(0.1f));
+        Assert.assertEquals(Integer.valueOf(1),valuesAndMatch.get(0.2f));
+        Assert.assertEquals(Integer.valueOf(1),valuesAndMatch.get(0.3f));
+        Assert.assertEquals(Integer.valueOf(1),valuesAndMatch.get(0.4f));
+        Assert.assertEquals(Integer.valueOf(1),valuesAndMatch.get(0.5f));
+    }
+
+    @Test
     public void whenRadialVariableGetElevations() throws IOException {
         RadialDatasetSweep.RadialVariable radialVariable = mock(RadialDatasetSweep.RadialVariable.class);
         when(radialVariable.getNumSweeps()).thenReturn(3);

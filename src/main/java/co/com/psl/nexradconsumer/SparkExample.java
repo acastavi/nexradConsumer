@@ -4,7 +4,7 @@ import co.com.psl.nexradconsumer.dtos.DataForService;
 import co.com.psl.nexradconsumer.dtos.IndexForTimeSeries;
 import co.com.psl.nexradconsumer.util.*;
 import com.cloudera.sparkts.DateTimeIndex;
-import com.cloudera.sparkts.SecondFrequency;
+import com.cloudera.sparkts.MillisecondFrequency;
 import com.cloudera.sparkts.api.java.DateTimeIndexFactory;
 import com.cloudera.sparkts.api.java.JavaTimeSeriesRDD;
 import com.cloudera.sparkts.api.java.JavaTimeSeriesRDDFactory;
@@ -16,7 +16,6 @@ import org.apache.spark.sql.DataFrame;
 import org.apache.spark.sql.Row;
 import org.apache.spark.sql.SQLContext;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import ucar.nc2.dt.RadialDatasetSweep;
 
 import java.io.File;
@@ -82,12 +81,12 @@ public class SparkExample {
     }
 
     private DateTimeIndex getUniformIndex(ZoneId zone) {
-       IndexForTimeSeries bestMatch = mathUtils.getBestIndexForDates(dates);
+        IndexForTimeSeries bestMatch = mathUtils.getBestIndexForDates(dates);
 
         return DateTimeIndexFactory.uniformFromInterval(
                 ZonedDateTime.of(Instant.ofEpochMilli(bestMatch.getStart()).atZone(zone).toLocalDateTime(), zone),
                 ZonedDateTime.of(Instant.ofEpochMilli(bestMatch.getEnd()).atZone(zone).toLocalDateTime(), zone),
-                new SecondFrequency(Math.toIntExact(bestMatch.getInterval() / (1000 * 2))));
+                new MillisecondFrequency(Math.toIntExact(bestMatch.getInterval() / 2)));
     }
 
     private DateTimeIndex getIrregularIndex(ZoneId zone) {
